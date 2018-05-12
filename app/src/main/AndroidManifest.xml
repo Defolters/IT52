@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".IntroWizard"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EventViewer" />
+        <activity android:name=".EventList"></activity>
     </application>
 
 </manifest>

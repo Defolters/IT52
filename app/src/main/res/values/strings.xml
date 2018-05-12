@@ -5,5 +5,16 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_coming">Будут</string>
     <string name="title_past">Были</string>
-    <string name="title_profile">Профиль</string>
+    <string name="title_profile">Инфо</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Добро пожаловать в IT52!</string>
+    <string name="slide_1_desc">Приложение позволяет следить за последними IT событиями в Нижнем Новгороде!</string>
+
+    <string name="slide_2_title">Возможности</string>
+    <string name="slide_2_desc">Material Design, добавление напоминаний прямо в календарь и больше ничего лишнего!</string>
+
 </resources>
