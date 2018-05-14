@@ -17,4 +17,7 @@
     <string name="slide_2_title">Возможности</string>
     <string name="slide_2_desc">Material Design, добавление напоминаний прямо в календарь и больше ничего лишнего!</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

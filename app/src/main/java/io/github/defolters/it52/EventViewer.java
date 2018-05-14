@@ -13,7 +13,8 @@ import android.webkit.WebViewClient;
 public class EventViewer extends AppCompatActivity {
 
     WebView webView;
-    AlertDialog dialog;
+//    AlertDialog dialog;
+    ProgressDialog nDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class EventViewer extends AppCompatActivity {
 
         /*dialog = new SpotsDialog(this);
         dialog.show();*/
-        ProgressDialog nDialog;
+
         nDialog = new ProgressDialog(EventViewer.this);
         nDialog.setMessage("Loading..");
         nDialog.setTitle("Get Data");
@@ -40,7 +41,8 @@ public class EventViewer extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                dialog.dismiss();
+//                dialog.dismiss();
+                nDialog.dismiss();
             }
         });
 
