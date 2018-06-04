@@ -149,49 +149,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
         String dateString = events.get(position).getStarted_at();
         String date = dateString.split("T")[0];
         String time = dateString.split("T")[1];
-        String month;
 
-        switch (date.split("-")[1]){
-            case "01":
-                month = "января";
-                break;
-            case "02":
-                month = "февраля";
-                break;
-            case "03":
-                month = "марта";
-                break;
-            case "04":
-                month = "апреля";
-                break;
-            case "05":
-                month = "мая";
-                break;
-            case "06":
-                month = "июня";
-                break;
-            case "07":
-                month = "июля";
-                break;
-            case "08":
-                month = "августа";
-                break;
-            case "09":
-                month = "сентября";
-                break;
-            case "10":
-                month = "октября";
-                break;
-            case "11":
-                month = "ноября";
-                break;
-            case "12":
-                month = "декабря";
-                break;
-            default:
-                month = "месяца";
-                break;
-        }
+        String month = Util.monthToString(ISO8601Parser.getISO8601Parser().setDate(dateString).getMonth());
 
         String text = date.split("-")[2] + " " + month + " " + date.split("-")[0] +
                 ", " + time.substring(0,5);

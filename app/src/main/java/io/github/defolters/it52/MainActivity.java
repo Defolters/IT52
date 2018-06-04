@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private boolean isFirstStart;
     private EventsService eventsService;
-    private RecyclerView listEvents;
-    private RecyclerView.LayoutManager layoutManager;
+
     private SwipeRefreshLayout swipeLayout;
     private EventsListAdapter adapter;
     //Context mcontext;
@@ -107,101 +106,17 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        ComingFragment comingFragment = new ComingFragment();
-        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction1.replace(R.id.frame_layout, comingFragment,"FragmentName");
-        fragmentTransaction1.commit();
-
-
         //Init cache
         Paper.init(this);
 
         //Init Service
         eventsService = Util.getEventsService();
 
-        //Init View
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadEvents(true);
-            }
-        });
-
-        listEvents = (RecyclerView) findViewById(R.id.list_events);
-        listEvents.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        listEvents.setLayoutManager(layoutManager);
-
-//        dialog = new SpotsDialog(this);
-
-
-
-
-
-        loadEvents(false);
+        ComingFragment comingFragment = new ComingFragment();
+        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction1.replace(R.id.frame_layout, comingFragment,"FragmentName");
+        fragmentTransaction1.commit();
     }
 
-    private void loadEvents(boolean isRefreshed) {
-        if (!isRefreshed) {
-
-            String cache = Paper.book().read("cache");
-            if (cache != null && !cache.isEmpty() && !cache.equals("null")) // If have cache
-            {
-                Events events = new Gson().fromJson(cache, Events.class); // Convert cache from Json to Object
-                adapter = new EventsListAdapter(getBaseContext(), events); //TODO: sort cards and pass them to different layouts
-                adapter.notifyDataSetChanged();
-                listEvents.setAdapter(adapter);
-            } else // If not have cache
-            {
-//            dialog.show();
-                //Fetch new data
-                eventsService.getEvents().enqueue(new Callback<Events>() {
-                    @Override
-                    public void onResponse(Call<Events> call, Response<Events> response) {
-                        adapter = new EventsListAdapter(getBaseContext(), response.body());
-                        adapter.notifyDataSetChanged();
-                        listEvents.setAdapter(adapter);
-
-                        //Save to cache
-                        Paper.book().write("cache", new Gson().toJson(response.body()));
-
-//                    dialog.dismiss();
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Events> call, Throwable t) {
-
-                    }
-                });
-            }
-        } else // If from Swipe to Refresh
-        {
-
-            swipeLayout.setRefreshing(true);
-            //Fetch new data
-            eventsService.getEvents().enqueue(new Callback<Events>() {
-                @Override
-                public void onResponse(Call<Events> call, Response<Events> response) {
-                    adapter = new EventsListAdapter(getBaseContext(), response.body());
-                    adapter.notifyDataSetChanged();
-                    listEvents.setAdapter(adapter);
-
-                    //Save to cache
-                    Paper.book().write("cache", new Gson().toJson(response.body()));
-
-                    //Dismiss refresh progressring
-                    swipeLayout.setRefreshing(false);
-                }
-
-                @Override
-                public void onFailure(Call<Events> call, Throwable t) {
-
-                }
-            });
-
-        }
-    }
 }
 
