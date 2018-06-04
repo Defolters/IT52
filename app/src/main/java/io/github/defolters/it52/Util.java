@@ -16,4 +16,6 @@ public class Util {
                 .toString();*/
         return new String("https://www.it52.info/api/v1/events.json");
     }
+
+    public static void a(){}
 }

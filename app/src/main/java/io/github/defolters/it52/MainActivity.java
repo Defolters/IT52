@@ -41,12 +41,28 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 //                    mTextMessage.setText(R.string.title_home); // TODO: load json from it52 and parse data
+                    // start fragment
+                    ComingFragment comingFragment = new ComingFragment();
+                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction1.replace(R.id.frame_layout, comingFragment,"FragmentName");
+                    fragmentTransaction1.commit();
+
                     return true;
                 case R.id.navigation_dashboard:
 //                    mTextMessage.setText(R.string.title_dashboard);
+                    PastFragment pastFragment= new PastFragment();
+                    FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction2.replace(R.id.frame_layout, pastFragment,"FragmentName");
+                    fragmentTransaction2.commit();
+
                     return true;
                 case R.id.navigation_notifications:
 //                    mTextMessage.setText(R.string.title_notifications);
+                    AboutFragment aboutFragment = new AboutFragment();
+                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction3.replace(R.id.frame_layout, aboutFragment,"FragmentName");
+                    fragmentTransaction3.commit();
+
                     return true;
             }
             return false;
@@ -91,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        ComingFragment comingFragment = new ComingFragment();
+        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction1.replace(R.id.frame_layout, comingFragment,"FragmentName");
+        fragmentTransaction1.commit();
+
+
         //Init cache
         Paper.init(this);
 
@@ -127,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             if (cache != null && !cache.isEmpty() && !cache.equals("null")) // If have cache
             {
                 Events events = new Gson().fromJson(cache, Events.class); // Convert cache from Json to Object
-                adapter = new EventsListAdapter(getBaseContext(), events);
+                adapter = new EventsListAdapter(getBaseContext(), events); //TODO: sort cards and pass them to different layouts
                 adapter.notifyDataSetChanged();
                 listEvents.setAdapter(adapter);
             } else // If not have cache
