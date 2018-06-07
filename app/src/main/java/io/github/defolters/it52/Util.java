@@ -104,19 +104,14 @@ public class Util {
         Events events1 = new Events();
 
         Calendar calendarToday = Calendar.getInstance();
-        System.out.println("calendar today");
-        System.out.println(calendarToday);
         ISO8601Parser parser = ISO8601Parser.getISO8601Parser();
-        //events1.add
+
         for (Event event : events){
             //get current date
             parser.setDate(event.getStarted_at());
 
             Calendar calendarEvent = Calendar.getInstance();
             calendarEvent.set(parser.getYear(), parser.getMonth()-1, parser.getDay(), parser.getHour(), parser.getMinute());
-//            System.out.println("Calendar event:");
-//            System.out.println(event.getTitle());
-//            System.out.println(calendarEvent);
 
             // if past event
             if (calendarToday.compareTo(calendarEvent) > 0){
@@ -129,51 +124,6 @@ public class Util {
                     events1.add(event);
                 }
             }
-//
-//            if (parser.getYear() < calendar.get(Calendar.YEAR)){
-//                System.out.println(1);
-//                System.out.println(event.getTitle());
-//                if (isPast){
-//                    events1.add(event);
-//                }
-//                continue;
-//            }
-//            else if (parser.getMonth() < calendar.get(Calendar.MONTH)){
-//                System.out.println(2);
-//                System.out.println(event.getTitle());
-//                if (isPast){
-//                    events1.add(event);
-//                }
-//                continue;
-//            }
-//            else if (parser.getDay() < calendar.get(Calendar.DAY_OF_MONTH)){
-//                System.out.println(3);
-//                System.out.println(event.getTitle());
-//                if (isPast){
-//                    events1.add(event);
-//                }                continue;
-//            }
-//            else if (parser.getHour() < calendar.get(Calendar.HOUR_OF_DAY)){
-//                System.out.println(4);
-//                System.out.println(event.getTitle());
-//                if (isPast){
-//                    events1.add(event);
-//                }                continue;
-//            }
-//            else if (parser.getMinute() < calendar.get(Calendar.MINUTE)){
-//                System.out.println(5);
-//                System.out.println(event.getTitle());
-//                if (isPast){
-//                    events1.add(event);
-//                }                continue;
-//            }
-//
-//            // get event date
-//            if (isComing){
-//                System.out.println(999);
-//                System.out.println(event.getTitle());
-//                events1.add(event);
-//            }
         }
         return events1;
     }

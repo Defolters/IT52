@@ -73,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        ComingEvents fragment1 = new ComingEvents();
-//        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction1.replace(R.id.frame_layout, fragment1, "Fragment One");  //create first framelayout with id fram in the activity where fragments will be displayed
-//        fragmentTransaction1.commit();
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
