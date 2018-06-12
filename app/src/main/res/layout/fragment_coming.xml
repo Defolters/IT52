@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#c7c7c7"
-        android:layout_marginBottom="?attr/actionBarSize"
-        >
+        android:layout_marginBottom="?attr/actionBarSize">
 
 
         <android.support.v7.widget.RecyclerView

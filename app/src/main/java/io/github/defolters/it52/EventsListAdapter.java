@@ -23,10 +23,11 @@ import java.util.Calendar;
 
 
 import io.github.defolters.it52.Model.Events;
+import ru.noties.markwon.Markwon;
 
 
 class EventsListViewHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+         {
     ItemClickListener itemClickListener;
 
     TextView title;
@@ -40,7 +41,8 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
     ImageButton arrow;
     ViewStub viewStub;
     String descriptionTempt;
-    MarkedView markedView;
+//    MarkedView markedView;
+    View holderView;
     boolean isExpanded;
 
 
@@ -60,32 +62,32 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
         shareAction = itemView.findViewById(R.id.share_action);
         arrow = itemView.findViewById(R.id.arrow);
         viewStub = (ViewStub) itemView.findViewById(R.id.viewStub);
-        viewStub.setLayoutResource(R.layout.event_description);
+        //viewStub.setLayoutResource(R.layout.event_description);
 
 
-        markedView = itemView.findViewById(R.id.descriptionMarkdowns);
-        markedView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                context.startActivity(i);
+//        markedView = itemView.findViewById(R.id.descriptionMarkdowns);
+//        markedView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                context.startActivity(i);
+//
+//                return true;
+//            }
+//        });
+//        markedView.setVisibility(View.INVISIBLE);
 
-                return true;
-            }
-        });
-        markedView.setVisibility(View.INVISIBLE);
-
-        itemView.setOnClickListener(this);
+        //itemView.setOnClickListener(this);
     }
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
-    @Override
-    public void onClick(View view) {
-        itemClickListener.onClick(view,getAdapterPosition(),false);
-    }
+//    @Override
+//    public void onClick(View view) {
+//        itemClickListener.onClick(view,getAdapterPosition(),false);
+//    }
 
     public void setContext(Context context){
         this.context = context;
@@ -169,10 +171,23 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
         arrowAnimation.setFillAfter(true);
         arrowAnimation.setDuration(350);
 
-        markedView.setMDText(descriptionTempt);
-        markedView.setVisibility(View.VISIBLE);
-
-        markedView.animate().translationY(markedView.getHeight());
+        //markedView.setMDText(descriptionTempt);
+//        markedView.setVisibility(View.VISIBLE);
+//        if (viewStub == null) {
+//            holderView = viewStub.inflate();
+//            description = holderView.findViewById(R.id.descriptions);
+////            description.setText(descriptionTempt);
+//            //Markwon.setMarkdown(description, descriptionTempt);
+//        }
+//        else {
+//            viewStub.setVisibility(View.VISIBLE);
+//            description = holderView.findViewById(R.id.descriptions);
+//        }
+        holderView = viewStub.inflate();
+        description = holderView.findViewById(R.id.descriptions);
+        Markwon.setMarkdown(description, descriptionTempt);
+//        description.setText(descriptionTempt);
+        //markedView.animate().translationY(markedView.getHeight());
         arrow.startAnimation(arrowAnimation);
 
         isExpanded = true;
@@ -190,8 +205,9 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
 
 //        markedView.setMDText(descriptionTempt);
 //        markedView.setVisibility(View.INVISIBLE);
+        viewStub.setVisibility(View.GONE);
 
-        markedView.animate().translationY(0);
+        //markedView.animate().translationY(0);
         arrow.startAnimation(arrowAnimation);
 
         isExpanded = false;
@@ -265,6 +281,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
                 }
                 else{
                     holder.expand();
+//                    TextView tv = holder.viewStub.getRootView().findViewById(R.id.description);
+//                    tv.setText("Kek");
                 }
 //                View holderView = holder.viewStub.inflate();
 //                holder.description = (TextView) holderView.findViewById(R.id.description);
@@ -277,7 +295,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
 
 
                 Toast.makeText(context, "viewStub!", Toast.LENGTH_SHORT).show();
-
+//                notifyDataSetChanged();
 
 
             }
