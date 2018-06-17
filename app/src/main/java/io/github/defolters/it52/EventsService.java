@@ -8,8 +8,5 @@ import retrofit2.http.Url;
 public interface EventsService {
     @GET("api/v1/events.json")
     Call<Events> getEvents();
-
-    @GET
-    Call<Events> getNewestArticles(@Url String url);
 }
 

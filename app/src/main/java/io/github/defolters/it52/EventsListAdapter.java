@@ -12,15 +12,12 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.animation.Transformation;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mittsu.markedview.MarkedView;
 import java.util.Calendar;
-
 
 import io.github.defolters.it52.Model.Events;
 import ru.noties.markwon.Markwon;
@@ -28,8 +25,6 @@ import ru.noties.markwon.Markwon;
 
 class EventsListViewHolder extends RecyclerView.ViewHolder
          {
-    ItemClickListener itemClickListener;
-
     TextView title;
     TextView date;
     TextView place;
@@ -37,11 +32,11 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
     TextView description;
     ImageButton showMap;
     ImageButton createEvent;
+    ImageButton openInBrowser;
     ImageButton shareAction;
     ImageButton arrow;
     ViewStub viewStub;
     String descriptionTempt;
-//    MarkedView markedView;
     View holderView;
     boolean isExpanded;
 
@@ -56,38 +51,14 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
         date = (TextView) itemView.findViewById(R.id.date_event);
         place = (TextView) itemView.findViewById(R.id.place_event);
         organizer = (TextView) itemView.findViewById(R.id.organizer_event);
-//        description = itemView.findViewById(R.id.description);
         showMap = itemView.findViewById(R.id.show_map);
         createEvent = itemView.findViewById(R.id.create_event);
+        openInBrowser = itemView.findViewById(R.id.browser_action);
         shareAction = itemView.findViewById(R.id.share_action);
         arrow = itemView.findViewById(R.id.arrow);
+
         viewStub = (ViewStub) itemView.findViewById(R.id.viewStub);
-        //viewStub.setLayoutResource(R.layout.event_description);
-
-
-//        markedView = itemView.findViewById(R.id.descriptionMarkdowns);
-//        markedView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                context.startActivity(i);
-//
-//                return true;
-//            }
-//        });
-//        markedView.setVisibility(View.INVISIBLE);
-
-        //itemView.setOnClickListener(this);
     }
-
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-//    @Override
-//    public void onClick(View view) {
-//        itemClickListener.onClick(view,getAdapterPosition(),false);
-//    }
 
     public void setContext(Context context){
         this.context = context;
@@ -154,6 +125,22 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
                 }
             }
         });
+
+        openInBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(link));
+
+                try {
+                    context.startActivity(intent);
+                }
+                catch (ActivityNotFoundException ErrVar) {
+                    Toast.makeText(context, "Browser app is not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public boolean isExpanded() {
@@ -161,40 +148,41 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
     }
 
     public void expand() {
+    animate(true);
 
-        RotateAnimation arrowAnimation = 0 == 0 ?
-                new RotateAnimation(0,180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                        0.5f) :
-                new RotateAnimation(180,0,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                        0.5f);
-
-        arrowAnimation.setFillAfter(true);
-        arrowAnimation.setDuration(350);
-
-        //markedView.setMDText(descriptionTempt);
-//        markedView.setVisibility(View.VISIBLE);
-//        if (viewStub == null) {
-//            holderView = viewStub.inflate();
-//            description = holderView.findViewById(R.id.descriptions);
-////            description.setText(descriptionTempt);
-//            //Markwon.setMarkdown(description, descriptionTempt);
-//        }
-//        else {
-//            viewStub.setVisibility(View.VISIBLE);
-//            description = holderView.findViewById(R.id.descriptions);
-//        }
-        holderView = viewStub.inflate();
-        description = holderView.findViewById(R.id.descriptions);
-        Markwon.setMarkdown(description, descriptionTempt);
-//        description.setText(descriptionTempt);
-        //markedView.animate().translationY(markedView.getHeight());
-        arrow.startAnimation(arrowAnimation);
+        if (viewStub.getParent() != null) {
+            holderView = viewStub.inflate();
+            description = holderView.findViewById(R.id.descriptions);
+            Markwon.setMarkdown(description, descriptionTempt);
+        }
+        else {
+            viewStub.setVisibility(View.VISIBLE);
+        }
 
         isExpanded = true;
     }
 
     public void collapse() {
-        RotateAnimation arrowAnimation = 0 == 1 ?
+        animate(false);
+        viewStub.setVisibility(View.GONE);
+
+        isExpanded = false;
+    }
+
+    public void animate(final boolean isExpanding) {
+        Animation cardAnimation = new Animation() {
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                super.applyTransformation(interpolatedTime, t);
+            }
+        };
+
+        RotateAnimation arrowAnimation = isExpanding ?
                 new RotateAnimation(0,180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                         0.5f) :
                 new RotateAnimation(180,0,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
@@ -202,19 +190,10 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
 
         arrowAnimation.setFillAfter(true);
         arrowAnimation.setDuration(350);
+        cardAnimation.setDuration(350);
 
-//        markedView.setMDText(descriptionTempt);
-//        markedView.setVisibility(View.INVISIBLE);
-        viewStub.setVisibility(View.GONE);
-
-        //markedView.animate().translationY(0);
+//        car.startAnimation(cardAnimation);
         arrow.startAnimation(arrowAnimation);
-
-        isExpanded = false;
-    }
-
-    public void animate() {
-
     }
 
 
@@ -241,9 +220,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
     public void onBindViewHolder(final EventsListViewHolder holder, int position) {
 
         holder.title.setText(events.get(position).getTitle());
-        //holder.description.setText(events.get(position).getDescription());
         holder.descriptionTempt = events.get(position).getDescription();
-//        holder.markedView.setMDText(holder.descriptionTempt);
 
         // Parsing date
         String dateString = events.get(position).getStarted_at();
@@ -262,17 +239,6 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
             holder.organizer.setText(events.get(position).getOrganizer().getFull_name());
         }
 
-
-        holder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                Intent detail = new Intent(context,EventViewer.class);
-                detail.putExtra("webURL",events.get(position).getUrl());
-                detail.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                context.startActivity(detail);
-            }
-        });
-
         holder.arrow.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,23 +247,9 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
                 }
                 else{
                     holder.expand();
-//                    TextView tv = holder.viewStub.getRootView().findViewById(R.id.description);
-//                    tv.setText("Kek");
                 }
-//                View holderView = holder.viewStub.inflate();
-//                holder.description = (TextView) holderView.findViewById(R.id.description);
-//                holder.description.setText(holder.descriptionTempt);
-
-//                holder.markedView = holderView.findViewById(R.id.descriptionMarkdown);
-//                holder.markedView.setMDText(holder.descriptionTempt);
-
-
-
 
                 Toast.makeText(context, "viewStub!", Toast.LENGTH_SHORT).show();
-//                notifyDataSetChanged();
-
-
             }
         });
 
@@ -309,5 +261,15 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    @Override
+    public long getItemId(int position){
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }
