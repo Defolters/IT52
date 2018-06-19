@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class Util {
     public static String GOOGLE_PLAY = "https://play.google.com/store";
     public static String GIT_HUB = "https://github.com/Defolters/IT52";
-    public static String IT52_TELEGRAM = "https://t.me/nnrug";
+    public static String IT52_TELEGRAM = "https://t.me/it52info";
     public static String DEVELOPER_TELEGRAM = "https://t.me/defolter";
     public static final String URL="https://www.it52.info/";
 
