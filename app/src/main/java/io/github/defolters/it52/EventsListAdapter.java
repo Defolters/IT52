@@ -154,9 +154,11 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
             holderView = viewStub.inflate();
             description = holderView.findViewById(R.id.descriptions);
             Markwon.setMarkdown(description, descriptionTempt);
+//            Toast.makeText(context, "viewstub != null",Toast.LENGTH_SHORT).show();
         }
         else {
             viewStub.setVisibility(View.VISIBLE);
+//            Toast.makeText(context, "else",Toast.LENGTH_SHORT).show();
         }
 
         isExpanded = true;
@@ -248,8 +250,6 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
                 else{
                     holder.expand();
                 }
-
-                Toast.makeText(context, "viewStub!", Toast.LENGTH_SHORT).show();
             }
         });
 
