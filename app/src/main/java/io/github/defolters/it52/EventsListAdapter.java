@@ -47,17 +47,16 @@ class EventsListViewHolder extends RecyclerView.ViewHolder
         super(itemView);
 
         isExpanded = false;
-        title = (TextView) itemView.findViewById(R.id.title_event);
-        date = (TextView) itemView.findViewById(R.id.date_event);
-        place = (TextView) itemView.findViewById(R.id.place_event);
-        organizer = (TextView) itemView.findViewById(R.id.organizer_event);
+        title = itemView.findViewById(R.id.title_event);
+        date = itemView.findViewById(R.id.date_event);
+        place = itemView.findViewById(R.id.place_event);
+        organizer = itemView.findViewById(R.id.organizer_event);
         showMap = itemView.findViewById(R.id.show_map);
         createEvent = itemView.findViewById(R.id.create_event);
         openInBrowser = itemView.findViewById(R.id.browser_action);
         shareAction = itemView.findViewById(R.id.share_action);
         arrow = itemView.findViewById(R.id.arrow);
-
-        viewStub = (ViewStub) itemView.findViewById(R.id.viewStub);
+        viewStub = itemView.findViewById(R.id.viewStub);
     }
 
     public void setContext(Context context){

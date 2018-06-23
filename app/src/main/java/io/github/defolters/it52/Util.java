@@ -53,7 +53,8 @@ public class Util {
                 listEvents.setAdapter(adapter);
             } else // If not have cache
             {
-//            dialog.show();
+                swipeLayout.setRefreshing(false);
+
                 //Fetch new data
                 eventsService.getEvents().enqueue(new Callback<Events>() {
                     @Override
@@ -65,7 +66,7 @@ public class Util {
                         //Save to cache
                         Paper.book().write("cache", new Gson().toJson(response.body()));
 
-//                    dialog.dismiss();
+                        swipeLayout.setRefreshing(false);
 
                     }
 

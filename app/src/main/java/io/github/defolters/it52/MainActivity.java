@@ -24,13 +24,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private boolean isFirstStart;
     private EventsService eventsService;
-
-    private SwipeRefreshLayout swipeLayout;
-    private EventsListAdapter adapter;
-    //Context mcontext;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 isFirstStart = getSharedPreferences.getBoolean("firstStart", true);
 
                 //  Check either activity or app is open very first time or not and do action
-                if (isFirstStart) {
+                if (true){//(isFirstStart) {
 
                     //  Launch application introduction screen
                     Intent i = new Intent(MainActivity.this, IntroWizard.class);
@@ -93,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         });
         t.start();
 
-//        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

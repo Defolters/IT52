@@ -30,7 +30,7 @@ public class ComingFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_coming, container, false);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_coming);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_coming);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -38,7 +38,7 @@ public class ComingFragment extends Fragment {
             }
         });
 
-        listEvents = (RecyclerView)view.findViewById(R.id.list_events_coming); // WILL IT WORK?
+        listEvents = view.findViewById(R.id.list_events_coming); // WILL IT WORK?
         listEvents.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);

@@ -31,7 +31,7 @@ public class PastFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_past, container, false);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_past);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_past);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -39,13 +39,12 @@ public class PastFragment extends Fragment {
             }
         });
 
-        listEvents = (RecyclerView)view.findViewById(R.id.list_events_past); // WILL IT WORK?
+        listEvents = view.findViewById(R.id.list_events_past); // WILL IT WORK?
         listEvents.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);
 
         Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, false);
-
 
         return view;
     }
