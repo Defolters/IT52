@@ -1,6 +1,7 @@
 package io.github.defolters.it52;
 
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -71,6 +74,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+
             case R.id.it52_site:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Util.URL));
@@ -83,6 +87,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+
             case R.id.it52_telegram:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Util.IT52_TELEGRAM));
@@ -95,6 +100,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+
             case R.id.developer_telegram:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Util.DEVELOPER_TELEGRAM));
@@ -107,6 +113,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+
             case R.id.sourcecode:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Util.GIT_HUB));
@@ -119,7 +126,24 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+
             case R.id.open_source:
+                final Dialog dialog = new Dialog(getActivity(), R.style.DialogFullscreenWithTitle);
+                dialog.setTitle(R.string.about_licenses);
+                dialog.setContentView(R.layout.open_source_licenses);
+
+                final WebView webView = dialog.findViewById(R.id.webview_open_source_licenses);
+                webView.loadUrl("file:///android_asset/open_source_license.html");
+
+                Button button = dialog.findViewById(R.id.open_source_licenses_button);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
                 break;
         }
 
