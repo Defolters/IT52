@@ -26,6 +26,7 @@ public class Util {
     public static String IT52_TELEGRAM = "https://t.me/it52info";
     public static String DEVELOPER_TELEGRAM = "https://t.me/defolter";
     public static final String URL="https://www.it52.info/";
+    private static boolean isFirstStartComming = true;
 
     public static EventsService getEventsService() {
         return RetrofitClient.getClient(URL).create(EventsService.class);
@@ -201,5 +202,15 @@ public class Util {
                 return TYPE_MOBILE;
         }
         return TYPE_NOT_CONNECTED;
+    }
+
+    public static boolean isFirstStartComming() {
+        if (isFirstStartComming) {
+            isFirstStartComming = false;
+
+            return true;
+        }
+
+        return false;
     }
 }

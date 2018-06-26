@@ -43,7 +43,13 @@ public class ComingFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);
 
+        // load events from cache
         Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, true);
+
+        // try to update events if comming fragment start in first time
+        if (Util.isFirstStartComming()) {
+            Util.loadEvents(true,getActivity(),listEvents,Util.getEventsService(),swipeRefreshLayout,true);
+        }
 
         return view;
     }
