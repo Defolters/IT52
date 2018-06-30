@@ -18,6 +18,7 @@ public class ComingFragment extends Fragment {
     public View view;
     public SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView listEvents;
+    private View errorView;
 
     public ComingFragment() {
         // Required empty public constructor
@@ -30,25 +31,28 @@ public class ComingFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_coming, container, false);
 
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_coming);
+        errorView = view.findViewById(R.id.empty_list);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, true);
+                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
             }
         });
 
-        listEvents = view.findViewById(R.id.list_events_coming); // WILL IT WORK?
+        listEvents = view.findViewById(R.id.recycler_list_events); // WILL IT WORK?
         listEvents.setHasFixedSize(true);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);
 
         // load events from cache
-        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, true);
+        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
 
         // try to update events if comming fragment start in first time
-        if (Util.isFirstStartComming()) {
-            Util.loadEvents(true,getActivity(),listEvents,Util.getEventsService(),swipeRefreshLayout,true);
+        if (Util.isFirstStartComing()) {
+            Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
         }
 
         return view;

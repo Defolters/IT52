@@ -18,7 +18,7 @@ public class PastFragment extends Fragment {
     public View view;
     public SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView listEvents;
-
+    private View errorView;
 
     public PastFragment() {
         // Required empty public constructor
@@ -31,20 +31,21 @@ public class PastFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_past, container, false);
 
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_past);
+        errorView = view.findViewById(R.id.empty_list);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, false);
+                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, false);
             }
         });
 
-        listEvents = view.findViewById(R.id.list_events_past); // WILL IT WORK?
+        listEvents = view.findViewById(R.id.recycler_list_events); // WILL IT WORK?
         listEvents.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);
 
-        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, false);
+        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, false);
 
         return view;
     }

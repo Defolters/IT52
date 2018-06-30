@@ -5,12 +5,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.esotericsoftware.minlog.Log;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import io.github.defolters.it52.Model.Event;
@@ -41,6 +44,7 @@ public class Util {
                                                final RecyclerView listEvents,
                                                EventsService eventsService,
                                                final SwipeRefreshLayout swipeLayout,
+                                               final View errorView,
                                                final boolean isComing) {
 
         if (!isRefreshed) {
@@ -52,6 +56,9 @@ public class Util {
                 EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing, events)); //TODO: sort cards and pass them to different layouts
                 adapter.notifyDataSetChanged();
                 listEvents.setAdapter(adapter);
+
+                listEvents.setVisibility(View.VISIBLE);
+                errorView.setVisibility(View.GONE);
             } else // If not have cache
             {
                 swipeLayout.setRefreshing(false);
@@ -68,25 +75,34 @@ public class Util {
                         Paper.book().write("cache", new Gson().toJson(response.body()));
 
                         swipeLayout.setRefreshing(false);
-
+                        listEvents.setVisibility(View.VISIBLE);
+                        errorView.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<Events> call, Throwable t) {
-
+                        Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+                        if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
+                            listEvents.setVisibility(View.INVISIBLE);
+                            errorView.setVisibility(View.VISIBLE);
+                        } else {
+                            listEvents.setVisibility(View.VISIBLE);
+                            errorView.setVisibility(View.GONE);
+                        }
                     }
                 });
             }
         } else // If from Swipe to Refresh
         {
-
             swipeLayout.setRefreshing(true);
 
-            if (getConnectivityStatus(context) == 0){
-                swipeLayout.setRefreshing(false);
-                Toast.makeText(context, "No internet connection",Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            check connectivity status
+//            if (getConnectivityStatus(context) == 0){
+//                swipeLayout.setRefreshing(false);
+//                Toast.makeText(context, "No internet connection",Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+
             //Fetch new data
             eventsService.getEvents().enqueue(new Callback<Events>() {
                 @Override
@@ -100,11 +116,21 @@ public class Util {
 
                     //Dismiss refresh progressring
                     swipeLayout.setRefreshing(false);
+                    listEvents.setVisibility(View.VISIBLE);
+                    errorView.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onFailure(Call<Events> call, Throwable t) {
-
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+                    swipeLayout.setRefreshing(false);
+                    if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
+                        listEvents.setVisibility(View.INVISIBLE);
+                        errorView.setVisibility(View.VISIBLE);
+                    } else {
+                        listEvents.setVisibility(View.VISIBLE);
+                        errorView.setVisibility(View.GONE);
+                    }
                 }
             });
 
@@ -135,6 +161,11 @@ public class Util {
                 }
             }
         }
+
+        if (isComing) {
+            Collections.reverse(events1);
+        }
+
         return events1;
     }
 
@@ -204,7 +235,7 @@ public class Util {
         return TYPE_NOT_CONNECTED;
     }
 
-    public static boolean isFirstStartComming() {
+    public static boolean isFirstStartComing() {
         if (isFirstStartComming) {
             isFirstStartComming = false;
 

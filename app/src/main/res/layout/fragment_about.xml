@@ -9,10 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="#e0e0e0">
 
             <include layout="@layout/card_about_1" />
 
@@ -20,5 +22,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </FrameLayout>
