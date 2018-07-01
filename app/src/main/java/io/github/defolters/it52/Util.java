@@ -71,7 +71,7 @@ public class Util {
 
                     @Override
                     public void onFailure(Call<Events> call, Throwable t) {
-                        Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
 
                         if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
                             listEvents.setVisibility(View.INVISIBLE);

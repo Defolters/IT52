@@ -38,18 +38,16 @@ public class IntroWizard extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro_wizard);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layoutDots);
+        btnSkip = findViewById(R.id.btn_skip);
+        btnNext = findViewById(R.id.btn_next);
 
 
         // layouts of all welcome sliders
         // add few more layouts if you want
         layouts = new int[]{
                 R.layout.welcome_slide1,
-                //R.layout.welcome_slide2,
-                //R.layout.welcome_slide3,
                 R.layout.welcome_slide2};
 
         // adding bottom dots

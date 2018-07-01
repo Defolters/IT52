@@ -34,9 +34,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:gravity="center"
-                android:text="IT52 - Нижегородское IT сообщество"/>
+                android:text="@string/it52"/>
 
         </RelativeLayout>
     </RelativeLayout>
-
 </android.support.v7.widget.CardView>

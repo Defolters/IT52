@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:gravity="center"
-            android:text="По всем замечаниям и предложениям пишите в личку."
+            android:text="@string/about_1"
             android:textColor="@android:color/black"/>
 
         <View
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Оценить приложение"/>
+                android:text="@string/about_rate"/>
 
         </LinearLayout>
 
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Посетить it52.info"/>
+                android:text="@string/about_it52"/>
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Группа IT52 в Телеграме"/>
+                android:text="@string/about_it52_telegram"/>
 
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Написать разработчику"/>
+                android:text="@string/about_telegram"/>
 
         </LinearLayout>
 
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Source code"/>
+                android:text="@string/about_source"/>
 
         </LinearLayout>
 
@@ -168,10 +168,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
-                android:text="Open source licenses"/>
+                android:text="@string/about_licenses"/>
 
         </LinearLayout>
-
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

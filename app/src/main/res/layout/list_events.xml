@@ -20,5 +20,4 @@
             android:paddingBottom="?attr/actionBarSize"/>
 
     </LinearLayout>
-
 </android.support.v4.widget.SwipeRefreshLayout>

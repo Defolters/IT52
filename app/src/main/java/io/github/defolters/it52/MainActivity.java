@@ -25,7 +25,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private boolean isFirstStart;
-    private EventsService eventsService;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -88,14 +87,11 @@ public class MainActivity extends AppCompatActivity {
         });
         t.start();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //Init cache
         Paper.init(this);
-
-        //Init Service
-        eventsService = Util.getEventsService();
 
         ComingFragment comingFragment = new ComingFragment();
         FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();

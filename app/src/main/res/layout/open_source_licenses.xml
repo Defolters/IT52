@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Close"
+        android:text="@string/close"
         android:textColor="@color/cardText"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="4dp"

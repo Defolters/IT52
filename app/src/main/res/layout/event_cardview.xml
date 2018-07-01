@@ -175,7 +175,6 @@
                     android:src="@drawable/ic_keyboard_arrow_down_black"/>
 
             </RelativeLayout>
-
         </LinearLayout>
 
         <ViewStub
@@ -186,5 +185,4 @@
             android:layout="@layout/event_description"/>
 
     </LinearLayout>
-
 </android.support.v7.widget.CardView>
