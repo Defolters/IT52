@@ -6,15 +6,12 @@ import android.net.NetworkInfo;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.esotericsoftware.minlog.Log;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 
 import io.github.defolters.it52.Model.Event;
 import io.github.defolters.it52.Model.Events;
@@ -29,16 +26,11 @@ public class Util {
     public static String IT52_TELEGRAM = "https://t.me/it52info";
     public static String DEVELOPER_TELEGRAM = "https://t.me/defolter";
     public static final String URL="https://www.it52.info/";
-    private static boolean isFirstStartComming = true;
+    private static boolean isFirstStartComing = true;
 
     public static EventsService getEventsService() {
         return RetrofitClient.getClient(URL).create(EventsService.class);
     }
-
-//    public static String getAPIUrl()
-//    {
-//        return "https://www.it52.info/api/v1/events.json";
-//    }
 
     public static synchronized void loadEvents(boolean isRefreshed, final Context context,
                                                final RecyclerView listEvents,
@@ -80,6 +72,7 @@ public class Util {
                     @Override
                     public void onFailure(Call<Events> call, Throwable t) {
                         Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+
                         if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
                             listEvents.setVisibility(View.INVISIBLE);
                             errorView.setVisibility(View.VISIBLE);
@@ -120,6 +113,7 @@ public class Util {
                 public void onFailure(Call<Events> call, Throwable t) {
                     Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
                     swipeLayout.setRefreshing(false);
+
                     if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
                         listEvents.setVisibility(View.INVISIBLE);
                         errorView.setVisibility(View.VISIBLE);
@@ -132,7 +126,7 @@ public class Util {
         }
     }
 
-    private static Events processEvents(boolean isComing, Events events){
+    private static Events processEvents(boolean isComing, Events events) {
         Events events1 = new Events();
 
         Calendar calendarToday = Calendar.getInstance();
@@ -146,13 +140,12 @@ public class Util {
             calendarEvent.set(parser.getYear(), parser.getMonth()-1, parser.getDay(), parser.getHour(), parser.getMinute());
 
             // if past event
-            if (calendarToday.compareTo(calendarEvent) > 0){
+            if (calendarToday.compareTo(calendarEvent) > 0) {
                 if (!isComing) {
                     events1.add(event);
                 }
-            }
-            else{
-                if (isComing){
+            } else {
+                if (isComing) {
                     events1.add(event);
                 }
             }
@@ -165,7 +158,7 @@ public class Util {
         return events1;
     }
 
-    public static String monthToString(int monthInt){
+    public static String monthToString(int monthInt) {
         String month;
 
         switch (monthInt){
@@ -213,7 +206,7 @@ public class Util {
         return month;
     }
 
-    public static int getConnectivityStatus(Context context){
+    public static int getConnectivityStatus(Context context) {
         int TYPE_WIFI = 1;
         int TYPE_MOBILE = 2;
         int TYPE_NOT_CONNECTED = 0;
@@ -232,8 +225,8 @@ public class Util {
     }
 
     public static boolean isFirstStartComing() {
-        if (isFirstStartComming) {
-            isFirstStartComming = false;
+        if (isFirstStartComing) {
+            isFirstStartComing = false;
 
             return true;
         }
