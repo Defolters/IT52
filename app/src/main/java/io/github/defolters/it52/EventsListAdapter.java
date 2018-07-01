@@ -22,7 +22,7 @@ import io.github.defolters.it52.Model.Events;
 import ru.noties.markwon.Markwon;
 
 
-class EventsListViewHolder extends RecyclerView.ViewHolder {
+class EventViewHolder extends RecyclerView.ViewHolder {
     private TextView title;
     private TextView date;
     private TextView place;
@@ -35,9 +35,8 @@ class EventsListViewHolder extends RecyclerView.ViewHolder {
     private ViewStub viewStub;
     private String descriptionTemp;
     private boolean isExpanded;
-    private Context context;
 
-    public EventsListViewHolder(View itemView) {
+    public EventViewHolder(View itemView) {
         super(itemView);
 
         isExpanded = false;
@@ -51,92 +50,6 @@ class EventsListViewHolder extends RecyclerView.ViewHolder {
         shareAction = itemView.findViewById(R.id.share_action);
         arrow = itemView.findViewById(R.id.arrow);
         viewStub = itemView.findViewById(R.id.viewStub);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void setButtons(final String link, final String dateString) {
-        showMap.setOnClickListener(new ImageButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + place.getText());
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-
-                try {
-                    context.startActivity(mapIntent);
-                } catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(context, "Maps app not found", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        createEvent.setOnClickListener(new ImageButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ISO8601Parser parser = ISO8601Parser.getISO8601Parser();
-                parser.setDate(dateString);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(parser.getYear(), parser.getMonth() - 1,
-                                parser.getDay(), parser.getHour(), parser.getMinute());
-
-                Intent calendarIntentVar = new Intent(Intent.ACTION_INSERT)
-                        .setData(CalendarContract.Events.CONTENT_URI)
-                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.getTimeInMillis())
-                        .putExtra(CalendarContract.Events.TITLE, title.getText())
-                        .putExtra(CalendarContract.Events.EVENT_LOCATION, place.getText());
-
-                try {
-                    context.startActivity(calendarIntentVar);
-                } catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(context, "Calendar app not found", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        shareAction.setOnClickListener(new ImageButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, link);
-                shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title.getText() + " " + date.getText());
-
-                try {
-                    context.startActivity(Intent.createChooser(shareIntent, "Share"));
-                } catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(context, "Share app not found", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        openInBrowser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(link));
-
-                try {
-                    context.startActivity(intent);
-                } catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(context, "Browser app is not found", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        arrow.setOnClickListener(new ImageButton.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExpanded()) {
-                    collapse();
-                } else {
-                    expand();
-                }
-            }
-        });
     }
 
     public boolean isExpanded() {
@@ -164,7 +77,7 @@ class EventsListViewHolder extends RecyclerView.ViewHolder {
         isExpanded = false;
     }
 
-    public void animate(final boolean isExpanding) {
+    private void animate(final boolean isExpanding) {
         RotateAnimation arrowAnimation = isExpanding ?
                 new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                         0.5f) :
@@ -193,12 +106,33 @@ class EventsListViewHolder extends RecyclerView.ViewHolder {
         return organizer;
     }
 
+    public ImageButton getShowMap() {
+        return showMap;
+    }
+
+    public ImageButton getCreateEvent() {
+        return createEvent;
+    }
+
+    public ImageButton getOpenInBrowser() {
+        return openInBrowser;
+    }
+
+    public ImageButton getShareAction() {
+        return shareAction;
+    }
+
+    public ImageButton getArrow() {
+        return arrow;
+    }
+
     public void setDescriptionTemp(String descriptionTemp) {
         this.descriptionTemp = descriptionTemp;
     }
+
 }
 
-public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder>{
+public class EventsListAdapter extends RecyclerView.Adapter<EventViewHolder>{
     private Context context;
     private Events events;
 
@@ -208,39 +142,108 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
     }
 
     @Override
-    public EventsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.event_cardview,parent,false);
 
-        return new EventsListViewHolder(itemView);
+        return new EventViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final EventsListViewHolder holder, int position) {
+    public void onBindViewHolder(final EventViewHolder holder, final int position) {
 
-        holder.getTitle().setText(events.get(position).getTitle());
-        holder.setDescriptionTemp(events.get(position).getDescription());
+        final ISO8601Parser parser = ISO8601Parser.getISO8601Parser();
+        parser.setDate(events.get(position).getStarted_at());
+        String month = Util.monthToString(parser.getMonth());
+        final String text = parser.getDay() + " " + month + " " + parser.getYear() +
+                ", " + events.get(position).getStarted_at().split("T")[1].substring(0,5);
 
-        // Parsing date
-        String dateString = events.get(position).getStarted_at();
-        String date = dateString.split("T")[0];
-        String time = dateString.split("T")[1];
-
-        String month = Util.monthToString(ISO8601Parser.getISO8601Parser().setDate(dateString).getMonth());
-
-        String text = date.split("-")[2] + " " + month + " " + date.split("-")[0] +
-                ", " + time.substring(0,5);
         holder.getDate().setText(text);
-
+        holder.getTitle().setText(events.get(position).getTitle());
         holder.getPlace().setText(events.get(position).getPlace());
+        holder.setDescriptionTemp(events.get(position).getDescription());
 
         if (!(events.get(position).getOrganizer() == null)){
             holder.getOrganizer().setText(events.get(position).getOrganizer().getFull_name());
         }
 
+        // Setting onClickListeners
+        holder.getShowMap().setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + events.get(position).getPlace());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 
-        holder.setContext(context);
-        holder.setButtons(events.get(position).getUrl(), events.get(position).getStarted_at());
+                try {
+                    context.startActivity(mapIntent);
+                } catch (ActivityNotFoundException ErrVar) {
+                    Toast.makeText(context, "Maps app not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        holder.getCreateEvent().setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(parser.getYear(), parser.getMonth() - 1,
+                        parser.getDay(), parser.getHour(), parser.getMinute());
+
+                Intent calendarIntentVar = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.getTimeInMillis())
+                        .putExtra(CalendarContract.Events.TITLE, events.get(position).getTitle())
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, events.get(position).getPlace());
+
+                try {
+                    context.startActivity(calendarIntentVar);
+                } catch (ActivityNotFoundException ErrVar) {
+                    Toast.makeText(context, "Calendar app not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        holder.getShareAction().setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, events.get(position).getUrl());
+                shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, events.get(position).getTitle() + " " + text);
+
+                try {
+                    context.startActivity(Intent.createChooser(shareIntent, "Share"));
+                } catch (ActivityNotFoundException ErrVar) {
+                    Toast.makeText(context, "Share app not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        holder.getOpenInBrowser().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(events.get(position).getUrl()));
+
+                try {
+                    context.startActivity(intent);
+                } catch (ActivityNotFoundException ErrVar) {
+                    Toast.makeText(context, "Browser app is not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        holder.getArrow().setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.isExpanded()) {
+                    holder.collapse();
+                } else {
+                    holder.expand();
+                }
+            }
+        });
     }
 
     @Override
