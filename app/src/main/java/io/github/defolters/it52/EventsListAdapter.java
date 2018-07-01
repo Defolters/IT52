@@ -218,8 +218,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
     @Override
     public void onBindViewHolder(final EventsListViewHolder holder, int position) {
 
-        holder.title.setText(events.get(position).getTitle());
-        holder.descriptionTempt = events.get(position).getDescription();
+        holder.getTitle().setText(events.get(position).getTitle());
+        holder.setDescriptionTemp(events.get(position).getDescription());
 
         // Parsing date
         String dateString = events.get(position).getStarted_at();
@@ -230,27 +230,15 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListViewHolder
 
         String text = date.split("-")[2] + " " + month + " " + date.split("-")[0] +
                 ", " + time.substring(0,5);
-        holder.date.setText(text);
+        holder.getDate().setText(text);
 
-        holder.place.setText(events.get(position).getPlace());
+        holder.getPlace().setText(events.get(position).getPlace());
 
         if (!(events.get(position).getOrganizer() == null)){
-            holder.organizer.setText(events.get(position).getOrganizer().getFull_name());
+            holder.getOrganizer().setText(events.get(position).getOrganizer().getFull_name());
         }
 
-        holder.arrow.setOnClickListener(new ImageButton.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.isExpanded()){
-                    holder.collapse();
-                }
-                else{
-                    holder.expand();
-                }
-            }
-        });
 
-        // здесь установить кнопки??!?!"?!
         holder.setContext(context);
         holder.setButtons(events.get(position).getUrl(), events.get(position).getStarted_at());
     }
