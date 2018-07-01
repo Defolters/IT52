@@ -35,10 +35,10 @@ public class Util {
         return RetrofitClient.getClient(URL).create(EventsService.class);
     }
 
-    public static String getAPIUrl()
-    {
-        return "https://www.it52.info/api/v1/events.json";
-    }
+//    public static String getAPIUrl()
+//    {
+//        return "https://www.it52.info/api/v1/events.json";
+//    }
 
     public static synchronized void loadEvents(boolean isRefreshed, final Context context,
                                                final RecyclerView listEvents,
@@ -50,17 +50,15 @@ public class Util {
         if (!isRefreshed) {
 
             String cache = Paper.book().read("cache");
-            if (cache != null && !cache.isEmpty() && !cache.equals("null")) // If have cache
-            {
+            if (cache != null && !cache.isEmpty() && !cache.equals("null")) { // If have cache
                 Events events = new Gson().fromJson(cache, Events.class); // Convert cache from Json to Object
-                EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing, events)); //TODO: sort cards and pass them to different layouts
+                EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing, events));
                 adapter.notifyDataSetChanged();
                 listEvents.setAdapter(adapter);
 
                 listEvents.setVisibility(View.VISIBLE);
                 errorView.setVisibility(View.GONE);
-            } else // If not have cache
-            {
+            } else { // If haven't cache
                 swipeLayout.setRefreshing(false);
 
                 //Fetch new data
@@ -92,8 +90,7 @@ public class Util {
                     }
                 });
             }
-        } else // If from Swipe to Refresh
-        {
+        } else { // If from Swipe to Refresh
             swipeLayout.setRefreshing(true);
 
 //            check connectivity status
@@ -114,7 +111,6 @@ public class Util {
                     //Save to cache
                     Paper.book().write("cache", new Gson().toJson(response.body()));
 
-                    //Dismiss refresh progressring
                     swipeLayout.setRefreshing(false);
                     listEvents.setVisibility(View.VISIBLE);
                     errorView.setVisibility(View.GONE);
@@ -133,9 +129,9 @@ public class Util {
                     }
                 }
             });
-
         }
     }
+
     private static Events processEvents(boolean isComing, Events events){
         Events events1 = new Events();
 
