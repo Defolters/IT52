@@ -22,10 +22,11 @@ import android.widget.Toast;
 public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    private LinearLayout googlePlay;
+//    private LinearLayout googlePlay;
     private LinearLayout it52Site;
     private LinearLayout it52Telegram;
     private LinearLayout developerTelegram;
+    private LinearLayout developerEmail;
     private LinearLayout sourcecode;
     private LinearLayout openSource;
 
@@ -40,17 +41,19 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        googlePlay = view.findViewById(R.id.google_play);
+//        googlePlay = view.findViewById(R.id.google_play);
         it52Site = view.findViewById(R.id.it52_site);
         it52Telegram = view.findViewById(R.id.it52_telegram);
         developerTelegram = view.findViewById(R.id.developer_telegram);
+        developerEmail = view.findViewById(R.id.developer_email);
         sourcecode = view.findViewById(R.id.sourcecode);
         openSource = view.findViewById(R.id.open_source);
 
-        googlePlay.setOnClickListener(this);
+//        googlePlay.setOnClickListener(this);
         it52Site.setOnClickListener(this);
         it52Telegram.setOnClickListener(this);
         developerTelegram.setOnClickListener(this);
+        developerEmail.setOnClickListener(this);
         sourcecode.setOnClickListener(this);
         openSource.setOnClickListener(this);
 
@@ -62,19 +65,6 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent();
 
         switch (view.getId()) {
-            case R.id.google_play:
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Util.GOOGLE_PLAY));
-
-                try {
-                    getActivity().startActivity(intent);
-                }
-                catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
-                }
-
-                break;
-
             case R.id.it52_site:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Util.URL));
@@ -82,9 +72,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 try {
                     getActivity().startActivity(intent);
                 }
-                catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
-                }
+                    catch (ActivityNotFoundException ErrVar) {
+                        Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
+                    }
 
                 break;
 
@@ -95,9 +85,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 try {
                     getActivity().startActivity(intent);
                 }
-                catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
-                }
+                    catch (ActivityNotFoundException ErrVar) {
+                        Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
+                    }
 
                 break;
 
@@ -108,8 +98,23 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 try {
                     getActivity().startActivity(intent);
                 }
+                    catch (ActivityNotFoundException ErrVar) {
+                        Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
+                    }
+
+                break;
+
+            case R.id.developer_email:
+                intent.setAction(Intent.ACTION_SENDTO);
+                intent.setType("text/plain");
+                intent.setData(Uri.parse("mailto:"+Util.DEVELOPER_EMAIL));
+//                intent.setData(Uri.parse(Util.GOOGLE_PLAY));
+
+                try {
+                    getActivity().startActivity(intent);
+                }
                 catch (ActivityNotFoundException ErrVar) {
-                    Toast.makeText(getActivity(), "Browser app is not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Email app is not found", Toast.LENGTH_LONG).show();
                 }
 
                 break;

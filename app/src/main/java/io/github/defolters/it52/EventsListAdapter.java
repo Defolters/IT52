@@ -185,6 +185,9 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventViewHolder>{
         holder.getCreateEvent().setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ISO8601Parser parser = ISO8601Parser.getISO8601Parser();
+                parser.setDate(events.get(position).getStarted_at());
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(parser.getYear(), parser.getMonth() - 1,
                         parser.getDay(), parser.getHour(), parser.getMinute());

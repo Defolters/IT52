@@ -12,16 +12,17 @@
     <string name="slide_1_desc">Приложение позволяет следить за последними IT событиями в Нижнем Новгороде!</string>
 
     <string name="slide_2_title">Возможности</string>
-    <string name="slide_2_desc">Material Design, быстрый просмотр расположения события на картах и добавление напоминаний прямо в календарь!</string>
+    <string name="slide_2_desc">Material Design, отображение событий на картах и добавление напоминаний в календарь!</string>
 
     <string name="it52">IT52 - Нижегородское IT сообщество</string>
     <string name="close">Close</string>
     <string name="internet_error">Нет подключения к интернету. Проверьте ваше соединение и попробуйте еще раз.</string>
-    <string name="about_1">По всем замечаниям и предложениям пишите в личку.</string>
+    <string name="about_1">По всем замечаниям и предложениям пишите на почту или в личку Телеграма.</string>
     <string name="about_rate">Оценить приложение</string>
+    <string name="about_mail">Написать разработчику</string>
     <string name="about_it52">Посетить it52.info</string>
     <string name="about_it52_telegram">Группа IT52 в Телеграме</string>
-    <string name="about_telegram">Написать разработчику</string>
+    <string name="about_telegram">Разработчик в Телеграме</string>
     <string name="about_source">Source code</string>
     <string name="about_licenses">Open source licenses</string>
 
