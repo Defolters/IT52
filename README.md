@@ -1,6 +1,13 @@
 # IT52
 Android application showing IT52 community events 
+
 ## Screenshots
+<a href="./screenshots/screener_1530453997698.png"><img src="./screenshots/screener_1530453997698.png" width="30%" /></a>
+<a href="./screenshots/screener_1530454017344.png"><img src="./screenshots/screener_1530454017344.png" width="30%" /></a>
+<a href="./screenshots/screener_1530465542146.png"><img src="./screenshots/screener_1530465542146.png" width="30%" /></a>
+<a href="./screenshots/screener_1530465555795.png"><img src="./screenshots/screener_1530465555795.png" width="30%" /></a>
+<a href="./screenshots/screener_1530465677778.png"><img src="./screenshots/screener_1530465677778.png" width="30%" /></a>
+
 ## License
 ```
 MIT License
