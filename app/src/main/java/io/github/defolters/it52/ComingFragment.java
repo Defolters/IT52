@@ -18,7 +18,8 @@ public class ComingFragment extends Fragment {
     public View view;
     public SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView listEvents;
-    private View errorView;
+    private View emptyView;
+    private View noInternetView;
 
     public ComingFragment() {
         // Required empty public constructor
@@ -31,13 +32,14 @@ public class ComingFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_coming, container, false);
 
-        errorView = view.findViewById(R.id.empty_list);
+        emptyView = view.findViewById(R.id.empty_list);
+        noInternetView = view.findViewById(R.id.no_internet_list);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
+                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, emptyView, noInternetView, true);
             }
         });
 
@@ -48,11 +50,11 @@ public class ComingFragment extends Fragment {
         listEvents.setLayoutManager(layoutManager);
 
         // load events from cache
-        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
+        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, emptyView, noInternetView, true);
 
         // try to update events if comming fragment start in first time
         if (Util.isFirstStartComing()) {
-            Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, true);
+            Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, emptyView, noInternetView, true);
         }
 
         return view;

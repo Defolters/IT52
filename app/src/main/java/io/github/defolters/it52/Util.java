@@ -34,12 +34,12 @@ public class Util {
     }
 
     public static synchronized void loadEvents(boolean isRefreshed, final Context context,
-                                               final RecyclerView listEvents,
+                                               final RecyclerView listEventsRecyclerView,
                                                EventsService eventsService,
                                                final SwipeRefreshLayout swipeLayout,
-                                               final View errorView,
+                                               final View emptyView,
+                                               final View noInternetView,
                                                final boolean isComing) {
-
         if (!isRefreshed) {
 
             String cache = Paper.book().read("cache");
@@ -47,10 +47,16 @@ public class Util {
                 Events events = new Gson().fromJson(cache, Events.class); // Convert cache from Json to Object
                 EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing, events));
                 adapter.notifyDataSetChanged();
-                listEvents.setAdapter(adapter);
+                listEventsRecyclerView.setAdapter(adapter);
 
-                listEvents.setVisibility(View.VISIBLE);
-                errorView.setVisibility(View.GONE);
+                if (adapter.getItemCount() != 0) {
+                    defaultListVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                } else {
+                    noEventsVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                }
+//                listEventsRecyclerView.setVisibility(View.VISIBLE);
+//                emptyView.setVisibility(View.GONE);
+
             } else { // If haven't cache
                 swipeLayout.setRefreshing(false);
 
@@ -60,26 +66,30 @@ public class Util {
                     public void onResponse(Call<Events> call, Response<Events> response) {
                         EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing,response.body()));
                         adapter.notifyDataSetChanged();
-                        listEvents.setAdapter(adapter);
+                        listEventsRecyclerView.setAdapter(adapter);
 
                         //Save to cache
                         Paper.book().write("cache", new Gson().toJson(response.body()));
 
                         swipeLayout.setRefreshing(false);
-                        listEvents.setVisibility(View.VISIBLE);
-                        errorView.setVisibility(View.GONE);
+
+                        if (adapter.getItemCount() != 0) {
+                            defaultListVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                        } else {
+                            noEventsVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                        }
+//                        listEventsRecyclerView.setVisibility(View.VISIBLE);
+//                        emptyView.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<Events> call, Throwable t) {
 //                        Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
 
-                        if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
-                            listEvents.setVisibility(View.INVISIBLE);
-                            errorView.setVisibility(View.VISIBLE);
+                        if (listEventsRecyclerView.getAdapter() == null || listEventsRecyclerView.getAdapter().getItemCount() == 0) {
+                            noInternetListVisibility(listEventsRecyclerView, emptyView, noInternetView);
                         } else {
-                            listEvents.setVisibility(View.VISIBLE);
-                            errorView.setVisibility(View.GONE);
+//                            defaultListVisibility(listEventsRecyclerView, emptyView, noInternetView);
                         }
                     }
                 });
@@ -100,14 +110,20 @@ public class Util {
                 public void onResponse(Call<Events> call, Response<Events> response) {
                     EventsListAdapter adapter = new EventsListAdapter(context, processEvents(isComing,response.body()));
                     adapter.notifyDataSetChanged();
-                    listEvents.setAdapter(adapter);
+                    listEventsRecyclerView.setAdapter(adapter);
 
                     //Save to cache
                     Paper.book().write("cache", new Gson().toJson(response.body()));
 
                     swipeLayout.setRefreshing(false);
-                    listEvents.setVisibility(View.VISIBLE);
-                    errorView.setVisibility(View.GONE);
+
+                    if (adapter.getItemCount() != 0) {
+                        defaultListVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                    } else {
+                        noEventsVisibility(listEventsRecyclerView, emptyView, noInternetView);
+                    }
+//                    listEventsRecyclerView.setVisibility(View.VISIBLE);
+//                    emptyView.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -115,16 +131,32 @@ public class Util {
                     Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
                     swipeLayout.setRefreshing(false);
 
-                    if (listEvents.getAdapter() == null || listEvents.getAdapter().getItemCount() == 0) {
-                        listEvents.setVisibility(View.INVISIBLE);
-                        errorView.setVisibility(View.VISIBLE);
+                    if (listEventsRecyclerView.getAdapter() == null || listEventsRecyclerView.getAdapter().getItemCount() == 0) {
+                        noInternetListVisibility(listEventsRecyclerView, emptyView, noInternetView);
                     } else {
-                        listEvents.setVisibility(View.VISIBLE);
-                        errorView.setVisibility(View.GONE);
+//                            defaultListVisibility(listEventsRecyclerView, emptyView, noInternetView);
                     }
                 }
             });
         }
+    }
+
+    private static void defaultListVisibility(RecyclerView recyclerView, View emptyView, View noInternetView) {
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        noInternetView.setVisibility(View.GONE);
+    }
+
+    private static void noEventsVisibility(RecyclerView recyclerView, View emptyView, View noInternetView) {
+        recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+        noInternetView.setVisibility(View.GONE);
+    }
+
+    private static void noInternetListVisibility(RecyclerView recyclerView, View emptyView, View noInternetView) {
+        recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
+        noInternetView.setVisibility(View.VISIBLE);
     }
 
     private static Events processEvents(boolean isComing, Events events) {

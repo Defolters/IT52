@@ -19,6 +19,7 @@ public class PastFragment extends Fragment {
     public SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView listEvents;
     private View errorView;
+    private View noInternetView;
 
     public PastFragment() {
         // Required empty public constructor
@@ -32,11 +33,13 @@ public class PastFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_past, container, false);
 
         errorView = view.findViewById(R.id.empty_list);
+        noInternetView = view.findViewById(R.id.no_internet_list);
+
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, false);
+                Util.loadEvents(true, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, noInternetView, false);
             }
         });
 
@@ -45,7 +48,7 @@ public class PastFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listEvents.setLayoutManager(layoutManager);
 
-        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, false);
+        Util.loadEvents(false, getActivity(), listEvents, Util.getEventsService(), swipeRefreshLayout, errorView, noInternetView, false);
 
         return view;
     }

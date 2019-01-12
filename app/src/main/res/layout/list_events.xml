@@ -11,6 +11,8 @@
         android:orientation="vertical">
 
         <include layout="@layout/empty_list"/>
+        <include layout="@layout/no_internet_list"/>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@id/recycler_list_events"

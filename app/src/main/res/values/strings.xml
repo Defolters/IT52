@@ -16,6 +16,7 @@
 
     <string name="it52">IT52 - Нижегородское IT сообщество</string>
     <string name="close">Close</string>
+    <string name="empty_list">К сожалению, в данный момент нет никаких событий, но вы всегда можете организовать своё на сайте.</string>
     <string name="internet_error">Нет подключения к интернету. Проверьте ваше соединение и попробуйте еще раз.</string>
     <string name="about_1">По всем замечаниям и предложениям пишите на почту или в личку Телеграма.</string>
     <string name="about_rate">Оценить приложение</string>
@@ -25,5 +26,6 @@
     <string name="about_telegram">Разработчик в Телеграме</string>
     <string name="about_source">Source code</string>
     <string name="about_licenses">Open source licenses</string>
+    <string name="no_events">¯\\_(ツ)_/¯</string>
 
 </resources>
